@@ -4,8 +4,13 @@ var Spotify = require('node-spotify-api');
 var keys = require('./keys.js');
 var fs = require("fs");
 
-//-Twitter----------------------------------------------------------------------
+var command = process.argv[2];
+var userInput = process.argv[3];
 
+var song = "";
+
+//-Twitter----------------------------------------------------------------------
+//
 // function myTweets() {
 //
 // var client = new Twitter({
@@ -32,38 +37,35 @@ var fs = require("fs");
 // }
 
 //Spotify-----------------------------------------------------------------------
-
+//
 function mySpotify(song) {
-
-  if (!song) {
-    song = "The Sign, Ace of Base";
-  }
+  song = song || "The Sign, Ace of Base";
 
   var spotify = new Spotify({
     id: keys.spotifyKeys.id,
     secret: keys.spotifyKeys.secret
   });
 
-  spotify.search({ type: 'track', query: song}, function(err, data) {
+  spotify.search({ type: 'track', query: song, limit: 1}, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-  for (var i = 0; i < 1; i++) {
+
   console.log("\n---------------------\n");
   console.log(data.tracks.items[0].artists[0].name);
-  console.log(data.tracks.items[i].name);
-  console.log(data.tracks.items[i].preview_url);
-  console.log(data.tracks.items[i].album.name);
+  console.log(data.tracks.items[0].name);
+  console.log(data.tracks.items[0].preview_url);
+  console.log(data.tracks.items[0].album.name);
   console.log("\n---------------------\n");
-  }
+
     });
 
 }
 
-if(process.argv[2] === "spotify-this-song"){
-  mySpotify();
+if (command === "spotify-this-song"){
+  console.log(userInput);
+  mySpotify(userInput);
 }
-
 
 //-Movie------------------------------------------------------------------------
 
